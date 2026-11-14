@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#f6f5ef">
+	<meta name="description" content="Inscriptions, réinscriptions et actualités du Complexe Scolaire Goschene-Ville.">
+	<meta name="goschene-api-url" content="">
+	<title>Complexe Scolaire Goschene-Ville</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.468.0/lucide.min.css">
+	<style>
+		:root {
+			--ink: #18324c;
+			--muted: #62778d;
+			--paper: #edf4fa;
+			--white: #f3f8fc;
+			--green: #1766a5;
+			--green-dark: #123d63;
+			--lime: #8ed3f0;
+			--coral: #45a5df;
+			--line: #dce7f1;
+			--serif: Georgia, 'Times New Roman', serif;
+			--sans: 'DM Sans', sans-serif;
+			--display: 'Manrope', sans-serif;
+		}
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; scroll-padding-top: 82px; }
+		body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-size: 15px; line-height: 1.55; }
+		button, input, select, textarea { font: inherit; }
+		button, a { -webkit-tap-highlight-color: transparent; }
+		a { color: inherit; text-decoration: none; }
+		button { color: inherit; }
+		.wrap { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+		.topline { height: 34px; display: flex; align-items: center; background: var(--green-dark); color: #e9f2f9; font-size: 11px; }
+		.topline-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+		.topline p { margin: 0; }
+		.topline a { color: var(--lime); }
+		.navbar { height: 76px; display: flex; align-items: center; position: sticky; z-index: 20; top: 0; background: rgba(241,247,252,.97); border-bottom: 1px solid rgba(24,50,76,.1); backdrop-filter: blur(12px); }
+		.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+		.brand { display: inline-flex; gap: 11px; align-items: center; min-width: 240px; }
+		.crest { width: 52px; height: 52px; flex: 0 0 52px; overflow: hidden; display: block; background: white; }
+		.crest img { width: 100%; height: 100%; object-fit: contain; display: block; }
+		.brand-name { font: 800 12px/1.2 var(--display); letter-spacing: .3px; }
+		.brand-name span { display: block; color: var(--green); font-size: 10px; font-weight: 600; margin-top: 4px; }
+		.nav-links { display: flex; gap: 30px; align-items: center; color: #4b6074; font-size: 13px; font-weight: 600; }
+		.nav-links a:hover { color: var(--green); }
+		.button { min-height: 44px; border: 0; padding: 0 18px; border-radius: 5px; background: var(--green-dark); color: white; font-weight: 700; font-size: 13px; display: inline-flex; gap: 9px; align-items: center; justify-content: center; cursor: pointer; transition: background .2s, transform .2s; }
+		.button:hover { background: var(--green-dark); transform: translateY(-1px); }
+		.button svg { width: 16px; height: 16px; }
+		.button-outline { color: var(--green); background: transparent; border: 1px solid #b5c8da; }
+		.button-outline:hover { background: #edf5fb; color: var(--green-dark); }
+		.menu-button { display: none; width: 42px; height: 42px; border: 1px solid var(--line); background: transparent; border-radius: 5px; place-items: center; cursor: pointer; }
+		.hero { padding: 44px 0 48px; overflow: hidden; color: white; background: linear-gradient(90deg, rgba(13,35,57,.92) 0%, rgba(13,35,57,.79) 48%, rgba(13,35,57,.38) 100%), url('image/B1.jpg') center 53% / cover no-repeat; }
+		.hero-grid { display: grid; grid-template-columns: .92fr 1.08fr; align-items: center; gap: 55px; }
+		.hero .eyebrow { color: var(--lime); }
+		.hero h1 { color: white; }
+		.hero h1 em { color: var(--lime); }
+		.hero-copy { color: #e2eef7; }
+		.hero-note { color: #f0f7fc; }
+		.hero .button-outline { color: white; border-color: rgba(255,255,255,.62); }
+		.hero .button-outline:hover { color: var(--green-dark); background: white; }
+		.eyebrow { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; gap: 9px; }
+		.eyebrow::before { content: ''; width: 23px; height: 2px; background: var(--coral); }
+		h1 { font: 700 clamp(38px, 5vw, 62px)/1.07 var(--display); letter-spacing: -1.7px; margin: 19px 0 18px; max-width: 590px; }
+		h1 em { font: italic 400 1.03em var(--serif); color: var(--green); }
+		.hero-copy { max-width: 450px; color: var(--muted); font-size: 16px; margin: 0 0 27px; }
+		.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; }
+		.hero-note { display: flex; align-items: center; gap: 9px; color: #536a7e; font-size: 12px; margin-top: 24px; }
+		.avatar-stack { display: flex; padding-left: 3px; }
+		.avatar-stack span { width: 25px; height: 25px; display: grid; place-items: center; margin-left: -4px; border: 2px solid var(--paper); border-radius: 50%; color: var(--green-dark); background: var(--lime); font-size: 9px; font-weight: 700; }
+		.avatar-stack span:nth-child(2) { background: #d6edf9; }
+		.avatar-stack span:nth-child(3) { background: #bddcf0; }
+		.hero-visual { position: relative; min-height: 405px; }
+		.hero-photo { position: absolute; inset: 5px 16px 8px 8px; overflow: hidden; border-radius: 5px 90px 5px 5px; background: #c9dff0; }
+		.hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+		.hero-photo::after { content: ''; position: absolute; inset: 40% 0 0; background: linear-gradient(transparent, rgba(13,45,73,.6)); }
+		.photo-caption { position: absolute; z-index: 2; bottom: 23px; left: 25px; color: white; font: 600 12px var(--display); }
+		.photo-caption span { display: block; font: 400 11px var(--sans); opacity: .8; margin-top: 3px; }
+		.image-stamp { position: absolute; width: 105px; height: 105px; border-radius: 50%; right: -7px; top: -13px; display: grid; place-items: center; text-align: center; background: var(--lime); color: var(--green-dark); font: 800 11px/1.35 var(--display); transform: rotate(9deg); }
+		.image-stamp svg { width: 21px; height: 21px; display: block; margin: 0 auto 4px; }
+		.hero-stat { position: absolute; left: -30px; bottom: 66px; z-index: 4; background: var(--green-dark); border-left: 3px solid var(--coral); padding: 13px 18px; box-shadow: 0 9px 28px rgba(133, 175, 216, 0.14); }
+		.hero-stat strong { display: block; font: 800 19px var(--display); }
+		.hero-stat span { display: block; color: var(--white); font-size: 10px; }
+		.quick-strip { background: var(--green); color: white; }
+		.quick-inner { display: grid; grid-template-columns: repeat(3, 1fr); }
+		.quick-item { min-height: 93px; padding: 20px 24px; display: flex; align-items: center; gap: 15px; border-right: 1px solid rgba(255,255,255,.2); }
+		.quick-item:first-child { padding-left: 0; }
+		.quick-item:last-child { border-right: 0; }
+		.quick-icon { width: 40px; height: 40px; flex: 0 0 40px; display: grid; place-items: center; border: 1px solid rgba(211,236,139,.45); color: var(--lime); border-radius: 50%; }
+		.quick-icon svg { width: 18px; height: 18px; }
+		.quick-item strong { display: block; font: 700 12px var(--display); }
+		.quick-item span { display: block; margin-top: 4px; color: #d5e8f7; font-size: 11px; }
+		.campus-section { background: var(--paper); }
+		.gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 145px; gap: 10px; }
+		.gallery-card { position: relative; min-width: 0; overflow: hidden; margin: 0; background: #d8e8f5; }
+		.gallery-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .45s ease; }
+		.gallery-card:hover img { transform: scale(1.04); }
+		.gallery-card::after { content: ''; position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgba(13,35,57,.78)); pointer-events: none; }
+		.gallery-card figcaption { position: absolute; z-index: 1; bottom: 12px; left: 13px; right: 12px; color: white; font: 700 12px var(--display); }
+		.gallery-card.featured { grid-column: span 2; grid-row: span 2; }
+		.gallery-card.featured figcaption { font-size: 15px; }
+		.gallery-card.wide { grid-column: span 2; }
+		.section { padding: 70px 0; }
+		.section-head { display: flex; justify-content: space-between; align-items: end; gap: 26px; margin-bottom: 26px; }
+		.section-head h2 { font: 700 36px/1.15 var(--display); letter-spacing: -.8px; margin: 12px 0 0; }
+		.section-head p { max-width: 360px; color: var(--muted); margin: 0; font-size: 13px; }
+		.enroll-section { background: #e7f1f9; }
+		.enroll-grid { display: grid; grid-template-columns: .72fr 1.28fr; gap: 70px; align-items: start; }
+		.enroll-intro { position: sticky; top: 110px; }
+		.enroll-intro h2 { font: 700 36px/1.15 var(--display); letter-spacing: -.8px; margin: 13px 0; }
+		.enroll-intro p { color: var(--muted); font-size: 14px; }
+		.process { list-style: none; margin: 28px 0 0; padding: 0; }
+		.process li { display: flex; gap: 12px; align-items: flex-start; margin: 16px 0; font-size: 12px; color: #526a80; }
+		.process b { font: 700 11px var(--display); color: var(--green); width: 24px; height: 24px; flex: 0 0 24px; display: grid; place-items: center; background: #e8f2fa; border-radius: 50%; }
+		.form-shell { border: 1px solid var(--line); padding: 29px; background: var(--white); }
+		.form-title { display: flex; justify-content: space-between; gap: 14px; align-items: start; margin-bottom: 20px; }
+		.form-title h3 { margin: 0; font: 700 19px var(--display); }
+		.form-title p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+		.required-note { color: #747e78; font-size: 10px; white-space: nowrap; }
+		.mode-switch { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; gap: 3px; background: #edf4fa; border-radius: 4px; margin-bottom: 22px; }
+		.mode-switch button { min-height: 39px; background: transparent; border: 0; border-radius: 3px; cursor: pointer; color: #64716c; font-size: 12px; font-weight: 700; }
+		.mode-switch button[aria-pressed="true"] { background: var(--green); color: white; }
+		.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 17px 14px; }
+		.field { display: flex; flex-direction: column; gap: 6px; }
+		.field.full { grid-column: 1 / -1; }
+		.field label { color: #304b66; font-size: 11px; font-weight: 700; }
+		.field input, .field select, .field textarea { width: 100%; min-height: 43px; padding: 10px 12px; border: 1px solid #d8e3ee; border-radius: 3px; outline: none; color: var(--ink); background: #fff; font-size: 12px; }
+		.field textarea { min-height: 75px; resize: vertical; }
+		.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,102,165,.12); }
+		.form-bottom { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 19px; }
+		.privacy-note { max-width: 260px; color: #758079; font-size: 10px; }
+		.form-message { display: none; margin-top: 15px; padding: 12px; border-left: 3px solid var(--green); background: #eaf3fb; color: var(--green-dark); font-size: 12px; }
+		.form-message.show { display: block; }
+		.form-message.error { border-left-color: #b42318; background: #fff1f0; color: #8f1d14; }
+		.student-space { background: #fff; }
+		.student-space-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+		.student-space-copy h2 { font: 700 36px/1.15 var(--display); letter-spacing: -.8px; margin: 13px 0; }
+		.student-space-copy p { color: var(--muted); font-size: 14px; }
+		.student-login { max-width: 520px; }
+		.student-login .field-grid { grid-template-columns: 1fr; }
+		.student-login .button { margin-top: 18px; }
+		.student-dashboard { grid-column: 2; grid-row: 1; align-self: end; max-width: 520px; margin-top: 16px; padding: 18px; background: #edf4fa; }
+		.student-dashboard p { margin: 0 0 12px; font-weight: 700; }
+		.wizard-progress { display: flex; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
+		.wizard-progress li { flex: 1; padding: 9px 5px; border-bottom: 3px solid var(--line); color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; }
+		.wizard-progress li[aria-current="step"] { border-color: var(--green); color: var(--green-dark); }
+		.wizard-panel[hidden], .camera-video[hidden], .photo-preview[hidden], .camera-capture[hidden], .student-dashboard[hidden] { display: none; }
+		.wizard-panel h4 { margin: 0 0 16px; font: 700 15px var(--display); }
+		.wizard-actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 22px; }
+		.wizard-actions .button-outline { border: 1px solid #b5c8da; }
+		.camera-tools { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+		.camera-video, .photo-preview { width: min(100%, 340px); aspect-ratio: 4 / 3; object-fit: cover; background: #dce7f1; border-radius: 4px; }
+		.camera-status { min-height: 1.5em; color: var(--muted); font-size: 12px; }
+		.admission-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; }
+		.admission-summary div { padding: 11px; background: #edf4fa; overflow-wrap: anywhere; }
+		.admission-summary dt { color: var(--muted); font-size: 10px; font-weight: 700; }
+		.admission-summary dd { margin: 4px 0 0; font-size: 12px; }
+		.review-photo { width: 120px; aspect-ratio: 1; margin-top: 6px; object-fit: cover; border-radius: 4px; background: #dce7f1; }
+		.events-section { background: #edf5fb; }
+		.event-controls { display: flex; align-items: center; gap: 8px; }
+		.filter-button { min-height: 35px; padding: 0 13px; border: 1px solid #cbdbea; background: transparent; border-radius: 3px; cursor: pointer; color: #536a80; font-size: 11px; font-weight: 700; }
+		.filter-button[aria-pressed="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+		.event-list { border-top: 1px solid #cbdbea; }
+		.event-row { display: grid; grid-template-columns: 90px 1fr 185px 40px; gap: 24px; align-items: center; padding: 21px 8px; border-bottom: 1px solid #cbdbea; }
+		.event-date { width: 64px; text-align: center; background: var(--white); padding: 8px 5px; border-radius: 3px; }
+		.event-date strong { display: block; font: 800 23px var(--display); line-height: 1; }
+		.event-date span { display: block; color: var(--green); font-size: 9px; font-weight: 800; text-transform: uppercase; margin-top: 4px; }
+		.event-info h3 { margin: 0 0 5px; font: 700 16px var(--display); }
+		.event-info p { margin: 0; color: #63788d; font-size: 11px; }
+		.event-kind { display: inline-block; margin-top: 8px; color: var(--green); background: #deeffa; padding: 3px 7px; border-radius: 2px; font-size: 9px; font-weight: 700; }
+		.event-location { color: #586f85; font-size: 11px; }
+		.event-location svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px; }
+		.event-action { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #b7cde0; border-radius: 50%; background: transparent; color: var(--green); cursor: pointer; }
+		.event-action svg { width: 16px; height: 16px; }
+		.event-action:hover, .event-action.joined { background: var(--green); border-color: var(--green); color: white; }
+		.event-footer { margin-top: 19px; display: flex; align-items: center; justify-content: space-between; color: #63788d; font-size: 11px; }
+		.event-footer strong { color: var(--green); }
+		.about-section { background: #e7f1f9; padding: 58px 0; }
+		.about-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; }
+		.about-copy h2 { font: 700 31px/1.2 var(--display); letter-spacing: -.5px; margin: 13px 0; }
+		.about-copy p { color: var(--muted); font-size: 13px; max-width: 500px; }
+		.values { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+		.value { border-top: 2px solid var(--coral); padding-top: 12px; }
+		.value:nth-child(2) { border-color: var(--green); }
+		.value:nth-child(3) { border-color: var(--lime); }
+		.value:nth-child(4) { border-color: #7db7df; }
+		.value strong { font: 700 13px var(--display); }
+		.value p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+		footer { padding: 36px 0; background: var(--green-dark); color: rgb(231, 231, 235); }
+		.footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 25px; }
+		.footer-brand { display: flex; align-items: center; gap: 12px; font: 800 12px var(--display); }
+		.footer-logo { width: 52px; height: 52px; display: block; object-fit: contain; background: rgb(241, 241, 241); }
+		.footer-brand > span { color: rgb(249, 249, 253); font: 800 12px var(--display); }
+		.footer-brand > span > span { display: block; color: #f6f8fa; font: 400 10px var(--sans); margin-top: 5px; }
+		.footer-links { display: flex; gap: 20px; color: #f7f9fa 2% 70%; font-size: 11px; }
+		.footer-copy { color: #b9d1e2; font-size: 10px; }
+		.notice  { font: italic 400 1.03em var(--serif); color: var(--muted); margin-top: 15px; margin-left: 1125px;color: }
+		@media (max-width: 850px) {
+			.nav-links { gap: 16px; }
+			.brand { min-width: auto; }
+			.hero-grid { gap: 30px; grid-template-columns: 1fr 1fr; }
+			.hero-visual { min-height: 350px; }
+			.enroll-grid { gap: 35px; grid-template-columns: .65fr 1.35fr; }
+			.event-row { grid-template-columns: 72px 1fr 145px 38px; gap: 15px; }
+		}
+		@media (max-width: 640px) {
+			.wrap { width: min(100% - 32px, 500px); }
+			.topline { height: 32px; font-size: 10px; }
+			.topline-inner p:last-child { display: none; }
+			.navbar { height: 66px; }
+			.brand-name { font-size: 10px; }
+			.crest { width: 43px; height: 43px; flex-basis: 43px; }
+			.menu-button { display: grid; }
+			.nav-inner > .button { display: none; }
+			.nav-links { display: none; position: absolute; left: 0; right: 0; top: 65px; padding: 12px 20px 18px; background: var(--paper); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0; }
+			.nav-links.open { display: flex; }
+			.nav-links a { padding: 11px 2px; border-bottom: 1px solid var(--line); }
+			.hero { padding: 40px 0 45px; }
+			.hero-grid { grid-template-columns: 1fr; gap: 30px; }
+			h1 { font-size: 43px; letter-spacing: -1.2px; }
+			.hero-copy { font-size: 14px; }
+			.hero-visual { min-height: 280px; margin: 0 8px 0 12px; }
+			.hero-photo { inset: 0 7px 8px 7px; border-top-right-radius: 65px; }
+			.hero-stat { left: -9px; bottom: 20px; }
+			.image-stamp { width: 83px; height: 83px; right: -10px; font-size: 9px; }
+			.quick-inner { grid-template-columns: 1fr; padding: 8px 0; }
+			.quick-item, .quick-item:first-child { min-height: 70px; padding: 10px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.16); }
+			.quick-item:last-child { border-bottom: 0; }
+			.quick-icon { width: 35px; height: 35px; flex-basis: 35px; }
+			.gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 115px; gap: 8px; }
+			.gallery-card.featured { grid-column: span 2; grid-row: span 2; }
+			.gallery-card.wide { grid-column: span 2; }
+			.section { padding: 48px 0; }
+			.section-head { display: block; margin-bottom: 20px; }
+			.section-head h2, .enroll-intro h2 { font-size: 30px; }
+			.section-head p { margin-top: 10px; }
+			.enroll-grid { grid-template-columns: 1fr; gap: 25px; }
+			.enroll-intro { position: static; }
+			.process { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-top: 16px; }
+			.process li { margin: 3px 0; }
+			.form-shell { padding: 19px 15px; }
+			.form-title { display: block; }
+			.required-note { display: block; margin-top: 7px; }
+			.student-space-grid { grid-template-columns: 1fr; gap: 22px; }
+			.student-space-copy h2 { font-size: 30px; }
+			.student-dashboard { grid-column: 1; grid-row: auto; }
+			.wizard-progress { gap: 3px; }
+			.wizard-progress li { padding-inline: 2px; font-size: 9px; }
+			.wizard-actions { flex-direction: column-reverse; }
+			.wizard-actions .button { width: 100%; }
+			.field-grid { grid-template-columns: 1fr; gap: 13px; }
+			.field.full { grid-column: auto; }
+			.form-bottom { align-items: stretch; flex-direction: column; }
+			.form-bottom .button { width: 100%; }
+			.event-controls { margin-top: 18px; }
+			.event-row { grid-template-columns: 54px 1fr 36px; gap: 10px; padding: 16px 0; }
+			.event-date { width: 49px; }
+			.event-date strong { font-size: 20px; }
+			.event-info h3 { font-size: 13px; }
+			.event-info p { font-size: 10px; }
+			.event-location { grid-column: 2; grid-row: 2; font-size: 10px; }
+			.event-action { grid-column: 3; grid-row: 1 / span 2; width: 34px; height: 34px; }
+			.event-footer { align-items: flex-start; flex-direction: column; gap: 5px; }
+			.about-grid { grid-template-columns: 1fr; gap: 28px; }
+			.about-copy h2 { font-size: 28px; }
+			.footer-inner { align-items: flex-start; flex-direction: column; }
+			.footer-links { flex-wrap: wrap; }
+		}
+		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+	</style>
+</head>
+<body>
+	<div class="topline"><div class="wrap topline-inner"><p>Bienvenue au Complexe Scolaire Goschene-Ville</p><p>Inscriptions et réinscriptions ouvertes pour 2026–2027</p></div></div>
+	<header class="navbar">
+		<div class="wrap nav-inner">
+			<a class="brand" href="#accueil" aria-label="Accueil Goschene-Ville">
+				<span class="crest"><img src="image/img.jpg" alt="Logo du Complexe Scolaire Goschene-Ville"></span>
+				<span class="brand-name">COMPLEXE SCOLAIRE<span>GOSCHENE-VILLE</span></span>
+			</a>
+			<nav class="nav-links" id="navLinks" aria-label="Navigation principale">
+				<a href="#accueil">Accueil</a><a href="#inscription">Admissions</a><a href="#espace-eleve">Espace élève</a><a href="#evenements">Événements</a><a href="#ecole">Notre école</a>
+			</nav>
+			<a class="button" href="#inscription">Inscrire un élève <i data-lucide="arrow-up-right"></i></a>
+			<button class="menu-button" id="menuButton" aria-label="Ouvrir le menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero" id="accueil">
+			<div class="wrap hero-grid">
+				<div>
+					<div class="eyebrow">Apprendre, grandir, réussir</div>
+					<h1>Chaque élève mérite un <em>bel avenir.</em></h1>
+					<p class="hero-copy">Un cadre bienveillant pour apprendre avec confiance, développer ses talents et construire les réussites de demain.</p>
+					<div class="hero-actions"><a class="button" href="#inscription">Démarrer une inscription <i data-lucide="arrow-right"></i></a><a class="button button-outline" href="#evenements">Voir les événements</a></div>
+					<div class="hero-note"><span class="avatar-stack"><span>J</span><span>V</span><span>+</span></span><span>Une communauté scolaire engagée</span></div>
+				</div>
+				<div class="hero-visual">
+					<div class="hero-photo"><img src="image/E3.jpg" alt="Un enseignant accompagne ses élèves en classe" fetchpriority="high"><div class="photo-caption">Le plaisir d'apprendre ensemble<span>Complexe Scolaire Goschene-Ville</span></div></div>
+					<div class="image-stamp"><span><i data-lucide="sparkles"></i> GRANDIR<br>ENSEMBLE</span></div>
+					<div class="hero-stat"><strong>2026–2027</strong><span>Admissions ouvertes</span></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="quick-strip" aria-label="Informations pratiques">
+			<div class="wrap quick-inner">
+				<div class="quick-item"><span class="quick-icon"><i data-lucide="clipboard-list"></i></span><div><strong>Inscriptions ouvertes</strong><span>Nouvelle année scolaire 2026–2027</span></div></div>
+				<div class="quick-item"><span class="quick-icon"><i data-lucide="refresh-cw"></i></span><div><strong>Déjà dans notre école ?</strong><span>Effectuez votre réinscription en ligne</span></div></div>
+				<div class="quick-item"><span class="quick-icon"><i data-lucide="calendar-days"></i></span><div><strong>La vie de l'école</strong><span>Retrouvez les prochains rendez-vous</span></div></div>
+			</div>
+		</section>
+
+		<section class="section campus-section" aria-labelledby="campusTitle">
+			<div class="wrap">
+				<div class="section-head"><div><div class="eyebrow">Notre cadre de vie</div><h2 id="campusTitle">L’école, en images.</h2></div><p>Des espaces de travail et une communauté qui font vivre Goschene-Ville chaque jour.</p></div>
+				<div class="gallery-grid">
+					<figure class="gallery-card featured"><img src="image/E1.jpg" alt="Des élèves en uniforme suivent un cours" loading="lazy"><figcaption>Apprendre ensemble</figcaption></figure>
+					<figure class="gallery-card"><img src="image/B2.jpg" alt="Un couloir lumineux de l’école" loading="lazy"><figcaption>Nos espaces</figcaption></figure>
+					<figure class="gallery-card"><img src="image/E2.jpg" alt="Des élèves travaillent en salle informatique" loading="lazy"><figcaption>Le numérique</figcaption></figure>
+					<figure class="gallery-card"><img src="image/E4.jpg" alt="Un enseignant donne son cours aux élèves" loading="lazy"><figcaption>La vie en classe</figcaption></figure>
+					<figure class="gallery-card"><img src="image/E5.jpg" alt="Des élèves découvrent l’informatique" loading="lazy"><figcaption>Découvrir et pratiquer</figcaption></figure>
+					<figure class="gallery-card wide"><img src="image/ar.jpg" alt="La cour et le bâtiment de l’école" loading="lazy"><figcaption>La communauté Goschene-Ville</figcaption></figure>
+					<figure class="gallery-card"><img src="image/images%20(1).jpeg" alt="Les plus jeunes élèves dans leur classe" loading="lazy"><figcaption>Grandir à l’école</figcaption></figure>
+				</div>
+			</div>
+		</section>
+
+		<section class="section student-space" id="espace-eleve">
+			<div class="wrap student-space-grid">
+				<div class="student-space-copy">
+					<div class="eyebrow">Accès réservé</div>
+					<h2>Espace élève</h2>
+					<p>Connectez-vous avec le nom et le code fournis par l’administration de l’école.</p>
+					<p class="privacy-note">La connexion réelle sera activée après raccordement au serveur sécurisé de l’école. Aucun nom ni code saisi ici n’est enregistré dans cette page.</p>
+				</div>
+				<form class="form-shell student-login" id="studentLoginForm" novalidate>
+					<div class="form-title"><div><h3>Connexion élève</h3><p>Utilisez vos identifiants scolaires.</p></div></div>
+					<div class="field-grid">
+						<div class="field"><label for="studentLoginName">Nom de l’élève *</label><input id="studentLoginName" name="name" autocomplete="username" required></div>
+						<div class="field"><label for="studentCode">Code élève *</label><input id="studentCode" name="code" type="password" autocomplete="current-password" required></div>
+					</div>
+					<button class="button" type="submit">Se connecter <i data-lucide="log-in"></i></button>
+					<div class="form-message" id="studentLoginMessage" role="status" aria-live="polite"></div>
+				</form>
+				<div class="student-dashboard" id="studentDashboard" hidden>
+					<p id="studentDashboardMessage"></p>
+					<button class="button button-outline" id="studentLogout" type="button">Se déconnecter</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="section enroll-section" id="inscription">
+			<div class="wrap enroll-grid">
+				<div class="enroll-intro">
+					<div class="eyebrow">Admissions 2026–2027</div>
+					<h2>Faisons le premier pas.</h2>
+					<p>Remplissez le formulaire pour transmettre une demande à l'école. Notre équipe pourra ensuite vous contacter pour la suite du dossier.</p>
+					<ol class="process"><li><b>1</b><span>Choisissez inscription ou réinscription.</span></li><li><b>2</b><span>Renseignez les informations de l'élève.</span></li><li><b>3</b><span>Préparez les pièces avec l'administration.</span></li></ol>
+				</div>
+				<form class="form-shell" id="admissionForm" novalidate>
+					<div class="form-title"><div><h3>Demande d'admission</h3><p>Les champs marqués d'un astérisque sont obligatoires.</p></div><span class="required-note">* Champ obligatoire</span></div>
+					<div class="mode-switch" role="group" aria-label="Type de demande">
+						<button type="button" data-mode="inscription" aria-pressed="true">Nouvelle inscription</button>
+						<button type="button" data-mode="reinscription" aria-pressed="false">Réinscription</button>
+					</div>
+					<input type="hidden" name="typeDemande" id="typeDemande" value="inscription">
+					<ol class="wizard-progress" aria-label="Étapes de la demande">
+						<li aria-current="step">Élève</li><li>Parent</li><li>Photo</li><li>Vérification</li>
+					</ol>
+					<section class="wizard-panel" data-step="0" aria-labelledby="admissionStudentTitle">
+						<h4 id="admissionStudentTitle" tabindex="-1">1. Informations de l’élève</h4>
+						<div class="field-grid">
+							<div class="field"><label for="studentName">Nom complet de l'élève *</label><input id="studentName" name="studentName" autocomplete="name" placeholder="Ex. Amina Kasongo" required></div>
+							<div class="field"><label for="birthDate">Date de naissance *</label><input id="birthDate" name="birthDate" type="date" required></div>
+							<div class="field full"><label for="grade">Classe demandée *</label><select id="grade" name="grade" required><option value="">Sélectionner une classe</option><option>Maternelle</option><option>1re primaire</option><option>2e primaire</option><option>3e primaire</option><option>4e primaire</option><option>5e primaire</option><option>6e primaire</option><option>1re secondaire</option><option>2e secondaire</option><option>3e secondaire</option><option>4e secondaire</option><option>5e secondaire</option><option>6e secondaire</option></select></div>
+						</div>
+					</section>
+					<section class="wizard-panel" data-step="1" aria-labelledby="admissionGuardianTitle" hidden>
+						<h4 id="admissionGuardianTitle" tabindex="-1">2. Parent ou tuteur</h4>
+						<div class="field-grid">
+							<div class="field"><label for="guardian">Nom du parent ou tuteur *</label><input id="guardian" name="guardian" autocomplete="name" placeholder="Votre nom complet" required></div>
+							<div class="field"><label for="phone">Téléphone du parent *</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Ex. +243 ..." required></div>
+							<div class="field"><label for="email">Adresse e-mail du parent *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="parent@exemple.com" required></div>
+							<div class="field full"><label for="message">Message à l'administration <span style="font-weight:400">(facultatif)</span></label><textarea id="message" name="message" placeholder="Précisez toute information utile à votre demande."></textarea></div>
+						</div>
+					</section>
+					<section class="wizard-panel" data-step="2" aria-labelledby="admissionPhotoTitle" hidden>
+						<h4 id="admissionPhotoTitle" tabindex="-1">3. Photo d’identification visuelle</h4>
+						<p class="privacy-note">Autorisez la caméra puis prenez une photo pour vérifier l’aperçu. Elle reste dans cette page et n’est pas transmise au serveur.</p>
+						<div class="camera-tools">
+							<button class="button button-outline" id="cameraStart" type="button">Ouvrir la caméra</button>
+							<button class="button camera-capture" id="cameraCapture" type="button" hidden>Prendre la photo</button>
+							<button class="button button-outline" id="cameraRetake" type="button" hidden>Reprendre la photo</button>
+						</div>
+						<video class="camera-video" id="cameraVideo" autoplay playsinline hidden aria-label="Aperçu de la caméra"></video>
+						<img class="photo-preview" id="photoPreview" alt="Aperçu de la photo d’identification" hidden>
+						<p class="camera-status" id="cameraStatus" role="status" aria-live="polite">La photo est facultative et ne sera pas transmise avec le formulaire.</p>
+					</section>
+					<section class="wizard-panel" data-step="3" aria-labelledby="admissionReviewTitle" hidden>
+						<h4 id="admissionReviewTitle" tabindex="-1">4. Vérifiez la demande</h4>
+						<dl class="admission-summary">
+							<div><dt>Type de demande</dt><dd data-summary="typeDemande"></dd></div>
+							<div><dt>Élève</dt><dd data-summary="studentName"></dd></div>
+							<div><dt>Date de naissance</dt><dd data-summary="birthDate"></dd></div>
+							<div><dt>Classe demandée</dt><dd data-summary="grade"></dd></div>
+							<div><dt>Parent ou tuteur</dt><dd data-summary="guardian"></dd></div>
+							<div><dt>Téléphone</dt><dd data-summary="phone"></dd></div>
+							<div><dt>E-mail</dt><dd data-summary="email"></dd></div>
+							<div><dt>Message</dt><dd data-summary="message"></dd></div>
+							<div><dt>Photo d’identification</dt><dd id="photoSummary">Aucune photo</dd><img class="review-photo" id="reviewPhotoPreview" alt="Aperçu de la photo d’identification" hidden></div>
+						</dl>
+						<p class="privacy-note">La photo affichée reste sur cet appareil ; elle n’est pas jointe à l’e-mail.</p>
+					</section>
+					<div class="form-bottom"><span class="privacy-note">Les renseignements seront transmis au serveur sécurisé puis envoyés par e-mail à l’administration.</span></div>
+					<div class="wizard-actions">
+						<button class="button button-outline" id="admissionPrevious" type="button" hidden>Étape précédente</button>
+						<button class="button" id="admissionNext" type="button">Étape suivante <i data-lucide="arrow-right"></i></button>
+						<button class="button" id="admissionSubmit" type="submit" hidden>Envoyer la demande <i data-lucide="send"></i></button>
+					</div>
+					<div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
+				</form>
+			</div>
+		</section>
+
+		<section class="section events-section" id="evenements">
+			<div class="wrap">
+				<div class="section-head"><div><div class="eyebrow">La vie à Goschene-Ville</div><h2>À noter dans l'agenda.</h2></div><div class="event-controls" role="group" aria-label="Filtrer les événements"><button class="filter-button" data-filter="all" aria-pressed="true">Tout</button><button class="filter-button" data-filter="avenir" aria-pressed="false">À venir</button></div></div>
+				<div class="event-list" id="eventList" aria-live="polite"></div>
+				<div class="event-footer"><span><strong id="eventCount">0 événement</strong> affiché</span><span>Appuyez sur la flèche pour suivre un événement.</span></div>
+			</div>
+		</section>
+		<section class="about-section" id="ecole">
+			<div class="wrap about-grid">
+				<div class="about-copy"><div class="eyebrow">Notre engagement</div><h2>Une école où chacun trouve sa place.</h2><p>Au Complexe Scolaire Goschene-Ville, l'apprentissage s'appuie sur la curiosité, le respect et la participation de toute la communauté éducative.</p></div>
+				<div class="values"><div class="value"><strong>Exigence</strong><p>Accompagner chaque élève vers le meilleur de lui-même.</p></div><div class="value"><strong>Bienveillance</strong><p>Offrir un cadre attentif et encourageant.</p></div><div class="value"><strong>Curiosité</strong><p>Donner envie de découvrir et de comprendre.</p></div><div class="value"><strong>Communauté</strong><p>Avancer ensemble, élèves, familles et équipe.</p></div></div>
+			</div>
+		</section>
+	</main>
+
+	<footer><div class="wrap"><div class="footer-inner"><a class="footer-brand" href="#accueil"><img class="footer-logo" src="image/img.jpg" alt=""><span>COMPLEXE SCOLAIRE GOSCHENE-VILLE<span>Apprendre, grandir, réussir.</span></span></a><div class="footer-links"><a href="#inscription">Admissions</a><a href="#evenements">Événements</a><a href="#ecole">Notre école</a></div><span class="footer-copy">© <span id="year"></span> Goschene-Ville</span></div><div class="notice"><em>Jenocode.</em></div></div></footer>
+
+	<script src="https://unpkg.com/lucide@0.468.0"></script>
+	<script>
+		const events = [	
+			{ date: '2026-11-17', title: 'Anniversair de L`école', description: 'Un temps de célèbration', kind: 'Vie scolaire', time: '09 h 00', place: 'Salle polyvalente' },
+			{ date: '2026-11-20', title: 'Journée culturelle', description: 'Les élèves célèbrent les cultures, les talents et les traditions de notre communauté.', kind: 'Culture', time: '08 h 30', place: 'Cour de l’école' },
+			{ date: '2026-12-04', title: 'Évaluations du premier trimestre', description: 'Début des évaluations de fin de trimestre pour les classes concernées.', kind: 'Calendrier scolaire', time: 'Selon l’horaire de classe', place: 'Dans les classes' }
+		];
+		const joinedEvents = new Set(JSON.parse(localStorage.getItem('goschene-events') || '[]'));
+		const eventList = document.getElementById('eventList');
+		const formatDate = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' });
+		const formatMonth = new Intl.DateTimeFormat('fr-FR', { month: 'short' });
+		function apiUrl(path) {
+			const apiBaseUrl = document.querySelector('meta[name="goschene-api-url"]').content.trim();
+			if (!apiBaseUrl) throw new Error('Le serveur sécurisé de l’école n’est pas encore configuré.');
+			const baseUrl = new URL(apiBaseUrl);
+			const localHost = ['localhost', '127.0.0.1', '[::1]'].includes(baseUrl.hostname);
+			if (baseUrl.protocol !== 'https:' && !localHost) {
+				throw new Error('Le serveur de l’école doit utiliser HTTPS.');
+			}
+			return new URL(path, baseUrl);
+		}
+
+		function renderEvents(filter = 'all') {
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			const visibleEvents = events.filter(event => filter !== 'avenir' || new Date(`${event.date}T00:00:00`) >= today);
+			eventList.innerHTML = visibleEvents.map(event => {
+				const eventDate = new Date(`${event.date}T00:00:00`);
+				const joined = joinedEvents.has(event.date);
+				return `<article class="event-row"><div class="event-date"><strong>${formatDate.format(eventDate).split(' ')[0]}</strong><span>${formatMonth.format(eventDate).replace('.', '')}</span></div><div class="event-info"><h3>${event.title}</h3><p>${event.description}</p><span class="event-kind">${event.kind}</span></div><div class="event-location"><i data-lucide="clock-3"></i>${event.time}<br><i data-lucide="map-pin"></i>${event.place}</div><button class="event-action ${joined ? 'joined' : ''}" type="button" data-event-date="${event.date}" aria-label="${joined ? 'Ne plus suivre' : 'Suivre'} : ${event.title}" aria-pressed="${joined}"><i data-lucide="${joined ? 'check' : 'arrow-up-right'}"></i></button></article>`;
+			}).join('') || '<p style="padding:22px 0;color:#64716c">Aucun événement à venir pour le moment.</p>';
+			document.getElementById('eventCount').textContent = `${visibleEvents.length} événement${visibleEvents.length > 1 ? 's' : ''}`;
+			if (window.lucide) lucide.createIcons();
+		}
+
+		document.querySelectorAll('.mode-switch button').forEach(button => button.addEventListener('click', () => {
+			document.querySelectorAll('.mode-switch button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+			document.getElementById('typeDemande').value = button.dataset.mode;
+		}));
+
+		const studentLoginForm = document.getElementById('studentLoginForm');
+		const studentLoginMessage = document.getElementById('studentLoginMessage');
+		const studentDashboard = document.getElementById('studentDashboard');
+		const studentDashboardMessage = document.getElementById('studentDashboardMessage');
+
+		function showStudentDashboard(student) {
+			studentLoginForm.hidden = true;
+			studentDashboard.hidden = false;
+			studentDashboardMessage.textContent = `${student.displayName}${student.grade ? ` — ${student.grade}` : ''}`;
+		}
+
+		studentLoginForm.addEventListener('submit', async event => {
+			event.preventDefault();
+			if (!studentLoginForm.checkValidity()) {
+				studentLoginForm.reportValidity();
+				return;
+			}
+
+			studentLoginMessage.classList.remove('error');
+			studentLoginMessage.classList.add('show');
+
+			try {
+				const response = await fetch(apiUrl('/api/auth/login'), {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+					credentials: 'include',
+					cache: 'no-store',
+					body: JSON.stringify(Object.fromEntries(new FormData(studentLoginForm).entries()))
+				});
+				const result = await response.json();
+				if (!response.ok || result.authenticated !== true || !result.student) {
+					throw new Error(result.error || 'Nom ou code incorrect, ou service indisponible.');
+				}
+				studentLoginForm.reset();
+				showStudentDashboard(result.student);
+			} catch (error) {
+				studentLoginMessage.classList.add('error');
+				studentLoginMessage.textContent = error.message || 'Connexion impossible. Réessayez plus tard.';
+			}
+		});
+
+		document.getElementById('studentLogout').addEventListener('click', async () => {
+			try {
+				const response = await fetch(apiUrl('/api/auth/logout'), {
+					method: 'POST',
+					credentials: 'include',
+					headers: { 'Accept': 'application/json' }
+				});
+				if (!response.ok) throw new Error('La déconnexion a échoué. Réessayez.');
+				studentDashboard.hidden = true;
+				studentLoginForm.hidden = false;
+				studentLoginMessage.classList.remove('show', 'error');
+			} catch (error) {
+				studentLoginMessage.classList.add('show', 'error');
+				studentLoginMessage.textContent = error.message;
+			}
+		});
+
+		if (document.querySelector('meta[name="goschene-api-url"]').content.trim()) {
+			fetch(apiUrl('/api/students/me'), { credentials: 'include', headers: { 'Accept': 'application/json' } })
+				.then(async response => {
+					if (response.status === 401) return null;
+					if (!response.ok) throw new Error('La session élève n’a pas pu être vérifiée.');
+					return response.json();
+				})
+				.then(result => {
+					if (result && result.authenticated && result.student) showStudentDashboard(result.student);
+				})
+				.catch(error => {
+					studentLoginMessage.classList.add('show', 'error');
+					studentLoginMessage.textContent = error.message;
+				});
+		}
+
+		const admissionForm = document.getElementById('admissionForm');
+		const admissionPanels = [...admissionForm.querySelectorAll('.wizard-panel')];
+		const wizardSteps = [...admissionForm.querySelectorAll('.wizard-progress li')];
+		const admissionMessage = document.getElementById('formMessage');
+		const previousStepButton = document.getElementById('admissionPrevious');
+		const nextStepButton = document.getElementById('admissionNext');
+		const submitAdmissionButton = document.getElementById('admissionSubmit');
+		const cameraVideo = document.getElementById('cameraVideo');
+		const cameraStartButton = document.getElementById('cameraStart');
+		const cameraCaptureButton = document.getElementById('cameraCapture');
+		const cameraRetakeButton = document.getElementById('cameraRetake');
+		const cameraStatus = document.getElementById('cameraStatus');
+		const photoPreview = document.getElementById('photoPreview');
+		const reviewPhotoPreview = document.getElementById('reviewPhotoPreview');
+		const photoSummary = document.getElementById('photoSummary');
+		let admissionStep = 0;
+		let cameraStream = null;
+		let studentPhotoUrl = null;
+
+		function stopCamera() {
+			if (cameraStream) {
+				cameraStream.getTracks().forEach(track => track.stop());
+				cameraStream = null;
+			}
+			cameraVideo.srcObject = null;
+			cameraVideo.hidden = true;
+			cameraCaptureButton.hidden = true;
+			cameraStartButton.hidden = Boolean(studentPhotoUrl);
+			cameraRetakeButton.hidden = !studentPhotoUrl;
+		}
+
+		function clearStudentPhoto() {
+			stopCamera();
+			if (studentPhotoUrl) URL.revokeObjectURL(studentPhotoUrl);
+			studentPhotoUrl = null;
+			photoPreview.removeAttribute('src');
+			photoPreview.hidden = true;
+			reviewPhotoPreview.removeAttribute('src');
+			reviewPhotoPreview.hidden = true;
+			photoSummary.textContent = 'Aucune photo';
+			cameraStartButton.hidden = false;
+			cameraRetakeButton.hidden = true;
+			cameraStatus.textContent = 'La photo est facultative et ne sera pas transmise avec le formulaire.';
+		}
+
+		function showAdmissionStep(step) {
+			stopCamera();
+			admissionStep = step;
+			admissionPanels.forEach((panel, index) => { panel.hidden = index !== step; });
+			wizardSteps.forEach((item, index) => {
+				if (index === step) item.setAttribute('aria-current', 'step');
+				else item.removeAttribute('aria-current');
+			});
+			previousStepButton.hidden = step === 0;
+			nextStepButton.hidden = step === admissionPanels.length - 1;
+			submitAdmissionButton.hidden = step !== admissionPanels.length - 1;
+			admissionMessage.classList.remove('show', 'error');
+			admissionPanels[step].querySelector('h4').focus();
+		}
+
+		function updateAdmissionSummary() {
+			admissionForm.querySelectorAll('[data-summary]').forEach(item => {
+				const field = admissionForm.elements.namedItem(item.dataset.summary);
+				let value = field ? field.value.trim() : '';
+				if (item.dataset.summary === 'typeDemande') {
+					value = value === 'reinscription' ? 'Réinscription' : 'Nouvelle inscription';
+				}
+				item.textContent = value || 'Non renseigné';
+			});
+			photoSummary.textContent = studentPhotoUrl ? 'Aperçu prêt (non envoyé)' : 'Aucune photo';
+			reviewPhotoPreview.hidden = !studentPhotoUrl;
+			if (studentPhotoUrl) reviewPhotoPreview.src = studentPhotoUrl;
+		}
+
+		nextStepButton.addEventListener('click', () => {
+			const currentPanel = admissionPanels[admissionStep];
+			const invalidField = [...currentPanel.querySelectorAll('input, select, textarea')].find(field => !field.checkValidity());
+			if (invalidField) {
+				invalidField.reportValidity();
+				return;
+			}
+			if (admissionStep === 2) updateAdmissionSummary();
+			showAdmissionStep(admissionStep + 1);
+		});
+
+		previousStepButton.addEventListener('click', () => showAdmissionStep(admissionStep - 1));
+
+		cameraStartButton.addEventListener('click', async () => {
+			if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+				cameraStatus.textContent = 'Cette caméra n’est pas disponible dans le navigateur ou le contexte actuel. Ouvrez le site en HTTPS et autorisez la caméra.';
+				return;
+			}
+			try {
+				cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+				cameraVideo.srcObject = cameraStream;
+				cameraVideo.hidden = false;
+				cameraStartButton.hidden = true;
+				cameraCaptureButton.hidden = false;
+				cameraRetakeButton.hidden = true;
+				cameraStatus.textContent = 'Caméra active. Cadrez l’élève puis prenez la photo.';
+				await cameraVideo.play();
+			} catch (error) {
+				stopCamera();
+				cameraStatus.textContent = 'Impossible d’ouvrir la caméra. Vérifiez les autorisations du navigateur.';
+			}
+		});
+
+		cameraCaptureButton.addEventListener('click', () => {
+			if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) {
+				cameraStatus.textContent = 'La caméra n’est pas encore prête. Patientez puis réessayez.';
+				return;
+			}
+			const canvas = document.createElement('canvas');
+			canvas.width = cameraVideo.videoWidth;
+			canvas.height = cameraVideo.videoHeight;
+			canvas.getContext('2d').drawImage(cameraVideo, 0, 0);
+			canvas.toBlob(blob => {
+				if (!blob) {
+					cameraStatus.textContent = 'La photo n’a pas pu être capturée. Réessayez.';
+					return;
+				}
+				if (studentPhotoUrl) URL.revokeObjectURL(studentPhotoUrl);
+				studentPhotoUrl = URL.createObjectURL(blob);
+				photoPreview.src = studentPhotoUrl;
+				photoPreview.hidden = false;
+				stopCamera();
+				cameraStatus.textContent = 'Aperçu prêt. La photo reste sur cet appareil et ne sera pas envoyée.';
+			}, 'image/jpeg', 0.9);
+		});
+
+		cameraRetakeButton.addEventListener('click', () => {
+			clearStudentPhoto();
+			cameraStatus.textContent = 'Ouvrez la caméra pour prendre une nouvelle photo.';
+		});
+
+		document.querySelectorAll('.filter-button').forEach(button => button.addEventListener('click', () => {
+			document.querySelectorAll('.filter-button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+			renderEvents(button.dataset.filter);
+		}));
+
+		eventList.addEventListener('click', event => {
+			const button = event.target.closest('[data-event-date]');
+			if (!button) return;
+			const date = button.dataset.eventDate;
+			joinedEvents.has(date) ? joinedEvents.delete(date) : joinedEvents.add(date);
+			localStorage.setItem('goschene-events', JSON.stringify([...joinedEvents]));
+			renderEvents(document.querySelector('.filter-button[aria-pressed="true"]').dataset.filter);
+		});
+
+		admissionForm.addEventListener('submit', async event => {
+			event.preventDefault();
+			for (let index = 0; index < admissionPanels.length; index += 1) {
+				const invalidField = [...admissionPanels[index].querySelectorAll('input, select, textarea')].find(field => !field.checkValidity());
+				if (invalidField) {
+					showAdmissionStep(index);
+					invalidField.reportValidity();
+					return;
+				}
+			}
+
+			const request = Object.fromEntries(new FormData(admissionForm).entries());
+			admissionMessage.classList.remove('error');
+			admissionMessage.classList.add('show');
+			admissionMessage.textContent = 'Transmission de votre demande à l’administration…';
+			submitAdmissionButton.disabled = true;
+
+			try {
+				const response = await fetch(apiUrl('/api/admissions'), {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+					credentials: 'include',
+					body: JSON.stringify(request)
+				});
+				const result = await response.json();
+				if (!response.ok) {
+					const error = new Error(result.error || `Le serveur a répondu avec le statut ${response.status}.`);
+					error.requestId = result.requestId;
+					error.saved = result.saved === true;
+					throw error;
+				}
+
+				admissionMessage.textContent = `Votre demande (${result.requestId}) a été transmise à l’administration. Le code élève sera créé et envoyé par e-mail au parent après validation.`;
+				admissionForm.reset();
+				clearStudentPhoto();
+				document.getElementById('typeDemande').value = request.typeDemande;
+				document.querySelectorAll('.mode-switch button').forEach(button => {
+					button.setAttribute('aria-pressed', String(button.dataset.mode === request.typeDemande));
+				});
+				showAdmissionStep(0);
+				admissionMessage.classList.add('show');
+				admissionMessage.textContent = `Votre demande (${result.requestId}) a été transmise à l’administration. Le code élève sera créé et envoyé par e-mail au parent après validation.`;
+			} catch (error) {
+				admissionMessage.classList.add('error');
+				admissionMessage.textContent = error.saved
+					? `${error.message} Référence : ${error.requestId}.`
+					: `La demande n’a pas été envoyée : ${error.message || 'vérifiez votre connexion puis réessayez.'}`;
+			} finally {
+				submitAdmissionButton.disabled = false;
+			}
+		});
+
+		const menuButton = document.getElementById('menuButton');
+		const navLinks = document.getElementById('navLinks');
+		menuButton.addEventListener('click', () => {
+			const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+			menuButton.setAttribute('aria-expanded', String(!expanded));
+			navLinks.classList.toggle('open', !expanded);
+			menuButton.innerHTML = `<i data-lucide="${expanded ? 'menu' : 'x'}"></i>`;
+			lucide.createIcons();
+		});
+		navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+			navLinks.classList.remove('open');
+			menuButton.setAttribute('aria-expanded', 'false');
+			menuButton.innerHTML = '<i data-lucide="menu"></i>';
+			lucide.createIcons();
+		}));
+
+		document.getElementById('year').textContent = new Date().getFullYear();
+		renderEvents();
+		if (window.lucide) lucide.createIcons();
+	</script>
+</body>
+</html>
